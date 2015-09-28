@@ -56,20 +56,24 @@ namespace StringMagic {
                 }
             }
         }
-
-        static string RemoveSpecialChars(string input) {
-            return Regex.Replace(input, @"[^0-9A-Za-z ]", string.Empty);
-        }
-
-        static void Main(string[] args) {
+        static int Main(string[] args) {
             string text = File.ReadAllText(INPUT_FILE_NAME);
-            string[] dataStr = text.Split(new char[] { '\n', '\r' }, 2, StringSplitOptions.RemoveEmptyEntries);
-            int stringSize = int.Parse(dataStr[0]);
-            List<string> words = RemoveSpecialChars(dataStr[1]).Split(' ').ToList();
-            CutLongWords(words, stringSize);
-
             StreamWriter file = new StreamWriter(OUTPUT_FILE_NAME);
-            try {
+            string[] dataStr = text.Split(new char[] { '\n', '\r'}, 2, StringSplitOptions.RemoveEmptyEntries);
+            int stringSize = 0;
+            try {                
+                if (!int.TryParse(dataStr[0], out stringSize)) {
+                    Console.WriteLine("Wrong number format");
+                    file.WriteLine("Wrong number format");
+                    return -1;
+                }
+                     
+                string clearString = Regex.Replace(dataStr[1], @"[\t\r\n]+" , " ");
+                clearString = Regex.Replace(clearString, @"[ ]+", " ");
+                clearString = Regex.Replace(clearString, @"[^0-9A-Za-z ]+", string.Empty);
+                List<string> words = clearString.Split(' ').ToList();
+                CutLongWords(words, stringSize);            
+            
                 int currentLineSize = 0;
                 List<string> wordList = new List<string>();
                 for (int i = 0; i < words.Count; i++) {
@@ -84,11 +88,12 @@ namespace StringMagic {
                     }
                 }
                 if (currentLineSize != 0) {
-                    file.WriteLine(GetAlignmentString(wordList, stringSize));
+                    file.WriteLine(string.Join(" ", wordList));
                 }
             } finally {
                 file.Close();
             }
+            return 0;
         }
     }
 }

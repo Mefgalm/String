@@ -59,7 +59,7 @@ namespace StringMagic {
 
         static void Main(string[] args) {
             string text = File.ReadAllText(INPUT_FILE_NAME);
-            string[] dataStr = text.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] dataStr = text.Split(new char[] { '\n', '\r' }, 2, StringSplitOptions.RemoveEmptyEntries);
             int stringSize = int.Parse(dataStr[0]);
             List<string> words = RemoveSpecialChars(dataStr[1]).Split(' ').ToList();
             CutLongWords(words, stringSize);

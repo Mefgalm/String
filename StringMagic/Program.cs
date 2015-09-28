@@ -39,6 +39,9 @@ namespace StringMagic {
 
         static void CutLongWords(List<string> wordList, int stringSize) {
             for(int i =0; i < wordList.Count; i++) {
+                if(wordList[i].Length <= stringSize) {
+                    continue;
+                }
                 string tmpString = wordList[i];
                 List<string> cutedWord = new List<string>();
 
@@ -46,6 +49,7 @@ namespace StringMagic {
                     cutedWord.Add(tmpString.Substring(0, stringSize));
                     tmpString = tmpString.Substring(stringSize);
                 }
+                cutedWord.Add(tmpString);
                 if (cutedWord.Count != 0) {
                     wordList.Remove(wordList[i]);
                     wordList.InsertRange(i, cutedWord);

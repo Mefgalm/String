@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace StringMagic {
     class Program {
-        private static String OUTPUT_FILE_NAME = "OutPut.txt";
+        private const string OUTPUT_FILE_NAME = "OutPut.txt";
+        private const string INPUT_FILE_NAME = "input.txt";
 
         static string GetAlignmentString(List<string> wordList, int wide) {
             string newStr = "";
@@ -57,9 +58,7 @@ namespace StringMagic {
         }
 
         static void Main(string[] args) {
-            string fileName = "input.txt";
-
-            string text = File.ReadAllText(fileName);
+            string text = File.ReadAllText(INPUT_FILE_NAME);
             string[] dataStr = text.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             int stringSize = int.Parse(dataStr[0]);
             List<string> words = RemoveSpecialChars(dataStr[1]).Split(' ').ToList();
@@ -71,7 +70,7 @@ namespace StringMagic {
                 List<string> wordList = new List<string>();
                 for (int i = 0; i < words.Count; i++) {
                     if (currentLineSize + words[i].Length > stringSize) {
-                        file.WriteLine(GetAligmentString(wordList, stringSize));
+                        file.WriteLine(GetAlignmentString(wordList, stringSize));
                         wordList.Clear();
                         currentLineSize = 0;
                         i--;
@@ -81,7 +80,7 @@ namespace StringMagic {
                     }
                 }
                 if (currentLineSize != 0) {
-                    file.WriteLine(GetAligmentString(wordList, stringSize));
+                    file.WriteLine(GetAlignmentString(wordList, stringSize));
                 }
             } finally {
                 file.Close();

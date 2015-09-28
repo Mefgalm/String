@@ -15,30 +15,29 @@ namespace StringMagic {
             string newStr = "";
             if( wordList.Count == 1 ) {
                 return wordList[0];
-            } else {
-                int totalWordsLenght = 0;
-                foreach(string word in wordList) {
-                    totalWordsLenght += word.Length;
-                }
-                int ost = (wide - totalWordsLenght) % (wordList.Count - 1);
-                string[] spaces = new string[wordList.Count - 1];
-                int spaceSize = (wide - totalWordsLenght) / (wordList.Count - 1);
-                for (int i = 0; i < spaces.Length; i++) {
-                    spaces[i] = new string(' ', spaceSize);
-                }
-                for (int i = 0; ost != 0; i++, ost--) {
-                    spaces[i] += ' ';
-                }
-                for(int i = 0; i < wordList.Count - 1; i++) {
-                    newStr += wordList[i] + spaces[i];
-                }
-                newStr += wordList[wordList.Count - 1];
             }
+            int totalWordsLenght = 0;
+            foreach (string word in wordList) {
+                totalWordsLenght += word.Length;
+            }
+            int ost = (wide - totalWordsLenght) % (wordList.Count - 1);
+            string[] spaces = new string[wordList.Count - 1];
+            int spaceSize = (wide - totalWordsLenght) / (wordList.Count - 1);
+            for (int i = 0; i < spaces.Length; i++) {
+                spaces[i] = new string(' ', spaceSize);
+            }
+            for (int i = 0; ost != 0; i++, ost--) {
+                spaces[i] += ' ';
+            }
+            for (int i = 0; i < wordList.Count - 1; i++) {
+                newStr += wordList[i] + spaces[i];
+            }
+            newStr += wordList[wordList.Count - 1];
             return newStr;
         }
 
-        static void CutLongWords(List<string> wordList, int stringSize) {
-            for(int i =0; i < wordList.Count; i++) {
+        static void CutLongWords(List<string> wordList, int stringSize) {            
+            for (int i =0; i < wordList.Count; i++) {
                 if(wordList[i].Length <= stringSize) {
                     continue;
                 }
@@ -50,10 +49,8 @@ namespace StringMagic {
                     tmpString = tmpString.Substring(stringSize);
                 }
                 cutedWord.Add(tmpString);
-                if (cutedWord.Count != 0) {
-                    wordList.Remove(wordList[i]);
-                    wordList.InsertRange(i, cutedWord);
-                }
+                wordList.Remove(wordList[i]);
+                wordList.InsertRange(i, cutedWord);
             }
         }
         static int Main(string[] args) {
@@ -65,6 +62,11 @@ namespace StringMagic {
                 if (!int.TryParse(dataStr[0], out stringSize)) {
                     Console.WriteLine("Wrong number format");
                     file.WriteLine("Wrong number format");
+                    return -1;
+                }
+                if(stringSize < 1) {
+                    Console.WriteLine("Line size can't be negative");
+                    file.WriteLine("Line size can't be negative");
                     return -1;
                 }
                      

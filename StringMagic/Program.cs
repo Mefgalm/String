@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace StringMagic {
     class Program {
-        private const string OUTPUT_FILE_NAME = "OutPut.txt";
-        private const string INPUT_FILE_NAME = "input.txt";
+        private const string OUTPUT_FILE_NAME = "out.txt";
+        private const string INPUT_FILE_NAME = "in.txt";
 
         static string GetAlignmentString(List<string> wordList, int wide) {
             string newStr = "";
@@ -59,21 +59,28 @@ namespace StringMagic {
                 wordList.InsertRange(i, cutedWord);
             }
         }
-        static int Main(string[] args) {
-            string text = File.ReadAllText(INPUT_FILE_NAME);
-            StreamWriter file = new StreamWriter(OUTPUT_FILE_NAME);
+        static void Main(string[] args) {
+            string text = "";
+            StreamWriter file = null; ;
+            try {
+                text = File.ReadAllText(INPUT_FILE_NAME);
+                file = new StreamWriter(OUTPUT_FILE_NAME);
+            } catch (FileNotFoundException ex) {
+                Console.WriteLine("File not found");
+                return;
+            }
             string[] dataStr = text.Split(new char[] { '\n', '\r'}, 2, StringSplitOptions.RemoveEmptyEntries);
             int stringSize = 0;
             try {                
                 if (!int.TryParse(dataStr[0], out stringSize)) {
                     Console.WriteLine("Wrong number format");
                     file.WriteLine("Wrong number format");
-                    return -1;
+                    return;
                 }
                 if(stringSize < 1) {
                     Console.WriteLine("Line size can't be negative");
                     file.WriteLine("Line size can't be negative");
-                    return -1;
+                    return;
                 }
                      
                 string clearString = Regex.Replace(dataStr[1], @"[\t\r\n]+" , " ");
@@ -101,7 +108,7 @@ namespace StringMagic {
             } finally {
                 file.Close();
             }
-            return 0;
+            return;
         }
     }
 }

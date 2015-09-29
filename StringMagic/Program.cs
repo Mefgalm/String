@@ -26,7 +26,13 @@ namespace StringMagic {
             for (int i = 0; i < spaces.Length; i++) {
                 spaces[i] = new string(' ', spaceSize);
             }
-            for (int i = 0; ost != 0; i++, ost--) {
+            int ostRight = ost / 2;
+            int ostLeft = ost - ostRight;
+            
+            for (int i = 0; ostLeft != 0; i++, ostLeft--) {
+                spaces[i] += ' ';
+            }
+            for (int i = spaces.Length - 1; ostRight != 0; i--, ostRight--) {
                 spaces[i] += ' ';
             }
             for (int i = 0; i < wordList.Count - 1; i++) {
